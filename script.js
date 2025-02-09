@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         containerHeight: containerHeight,
         imageForwardSrc: './heart.png',
         imageBackgroundSrc: './video-thumbs.jpg',
-        htmlBackground: '<video id="bg-video" src="./valentine-message.mp4" playsinline webkit-playsinline loop style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;"></video>',
+        htmlBackground: '<div id="video-wrapper" style="position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%;"><video id="bg-video" poster="video-thumbs.jpg" src="./valentine-message.mp4" playsinline webkit-playsinline loop"></video></div>',
         clearZoneRadius: 30,
         nPoints: 30,
         pointSize: 4,
@@ -23,21 +23,28 @@ document.addEventListener('DOMContentLoaded', () => {
         callback: function() {
             const video = document.getElementById('bg-video');
             video.muted = false;  // Unmute before playing
+            video.loop = true;
             video.play().catch(error => {
                 // If autoplay fails, try with mute
                 video.muted = true;
                 video.play().then(() => {
                     // Once playing, unmute on first user interaction
                     document.addEventListener('click', () => {
-                        video.muted = false;
-                    }, { once: true });
+                        video.muted = !video.muted;
+                    }, { once: false });
                 });
             });
+            video.muted = false;  // Unmute after playing
         }
     });
 
     // Initialize the scratch card
     sc.init().then(() => {
+        const video = document.getElementById('bg-video');
+        if (video) {
+            video.muted = false;
+            video.src = './valentine-message.mp4';
+        }
         sc.canvas.addEventListener('scratch.move', () => {
             let percent = sc.getPercent().toFixed(2);
         });
