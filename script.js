@@ -34,17 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     }, { once: false });
                 });
             });
-            video.muted = false;  // Unmute after playing
         }
     });
 
     // Initialize the scratch card
     sc.init().then(() => {
-        const video = document.getElementById('bg-video');
-        if (video) {
-            video.muted = false;
-            video.src = './valentine-message.mp4';
-        }
         sc.canvas.addEventListener('scratch.move', () => {
             let percent = sc.getPercent().toFixed(2);
         });
