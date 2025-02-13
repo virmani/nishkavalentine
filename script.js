@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         containerHeight: containerHeight,
         imageForwardSrc: './heart.png',
         imageBackgroundSrc: './video-thumbs.jpg',
-        htmlBackground: '<div id="video-wrapper" style="position: fixed; top: 0; left: 0; z-index: -1; width: 100%; height: 100%;"><video id="bg-video" poster="video-thumbs.jpg" src="./valentine-message.mp4" playsinline webkit-playsinline loop"></video></div>',
+        htmlBackground: '<div id="video-wrapper"><video id="bg-video" poster="video-thumbs.jpg" src="./valentine-message.mp4" playsinline webkit-playsinline loop"></video></div>',
         clearZoneRadius: 30,
         nPoints: 30,
         pointSize: 4,
