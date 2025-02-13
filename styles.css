@@ -1,22 +1,25 @@
 body {
     margin: 0;
-    padding: 0;
+    padding: env(safe-area-inset-top) 0 0 0; /* Add padding for notch */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     width: 100vw;
-    background-color: #FFB6C1; /* Light pink */
+    background-color: red; /* Light pink */
     overflow: hidden;
+    /* Add viewport height fix for mobile browsers */
+    height: -webkit-fill-available;
+    min-height: -webkit-fill-available;
 }
 
 #js--sc--container {
     position: relative;
-    margin: 0;
+    margin: env(safe-area-inset-top) 0 0 0; /* Add margin for notch */
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid red; /* Added white border */
+    border: 2px solid red;
 }
 
 #video-wrapper {
@@ -51,10 +54,10 @@ canvas {
     }
 }
 
-/* Landscape and desktop screens */
+/* Landscape and desktop screens */ /* 9:16 aspect ratio */
 @media (min-aspect-ratio: 9/16) {
     #js--sc--container, #video-wrapper, canvas {
-        width: calc(100vh * 9/16) !important; /* 9:16 aspect ratio */
+         width: calc(100vh * 9/16) !important;  
         height: 100vh !important;
     }
 } 

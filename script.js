@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         scratchType: SCRATCH_TYPE.LINE,
         containerWidth: containerWidth,
         containerHeight: containerHeight,
-        imageForwardSrc: './heart.png',
+        imageForwardSrc: './dalle-valentine.webp',
         imageBackgroundSrc: './video-thumbs.jpg',
         htmlBackground: '<div id="video-wrapper"><video id="bg-video" poster="video-thumbs.jpg" src="./valentine-message.mp4" playsinline webkit-playsinline loop"></video></div>',
         clearZoneRadius: 30,
@@ -24,14 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('bg-video');
             video.muted = false;  // Unmute before playing
             video.loop = true;
-            video.play().catch(error => {
+            video.play().then(() => {
+                clickToUnmute(video);
+            }).catch(error => {
                 // If autoplay fails, try with mute
                 video.muted = true;
                 video.play().then(() => {
-                    // Once playing, unmute on first user interaction
-                    document.addEventListener('click', () => {
-                        video.muted = !video.muted;
-                    }, { once: false });
+                    clickToUnmute(video);
                 });
             });
         }
@@ -46,3 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error(error.message);
     });
 }); 
+
+function clickToUnmute(video) {
+    document.addEventListener('click', () => {
+        video.muted = !video.muted;
+    }, { once: false });
+}
