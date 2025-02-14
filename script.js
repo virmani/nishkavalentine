@@ -1,9 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Track page load
+    gtag('event', 'page_view', {
+        'event_category': 'engagement',
+        'event_label': 'valentine_card_loaded'
+    });
+
     const scContainer = document.getElementById('js--sc--container');
     
     // Set container dimensions based on viewport
     const containerHeight = window.innerHeight;
-    // Restrict width on wide screens
     const containerWidth = Math.min(window.innerWidth, containerHeight);
     
     scContainer.style.height = `${containerHeight}px`;
@@ -22,14 +27,23 @@ document.addEventListener('DOMContentLoaded', () => {
         percentToFinish: 50,
         callback: function() {
             const video = document.getElementById('bg-video');
-            video.muted = false;  // Unmute before playing
+            video.muted = false;
             video.loop = true;
             video.play().then(() => {
+                // Track video start
+                gtag('event', 'video_start', {
+                    'event_category': 'engagement',
+                    'event_label': 'valentine_video_started'
+                });
                 clickToUnmute(video);
             }).catch(error => {
-                // If autoplay fails, try with mute
                 video.muted = true;
                 video.play().then(() => {
+                    // Track muted video start
+                    gtag('event', 'video_start_muted', {
+                        'event_category': 'engagement',
+                        'event_label': 'valentine_video_started_muted'
+                    });
                     clickToUnmute(video);
                 });
             });
@@ -38,8 +52,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize the scratch card
     sc.init().then(() => {
+        let hasStartedScratching = false;
+        let has50PercentScratched = false;
+
         sc.canvas.addEventListener('scratch.move', () => {
             let percent = sc.getPercent().toFixed(2);
+            
+            // Track first scratch
+            if (!hasStartedScratching) {
+                hasStartedScratching = true;
+                gtag('event', 'scratch_start', {
+                    'event_category': 'engagement',
+                    'event_label': 'started_scratching'
+                });
+            }
+
+            // Track 50% scratched
+            if (!has50PercentScratched && percent > 50) {
+                has50PercentScratched = true;
+                gtag('event', 'scratch_50_percent', {
+                    'event_category': 'engagement',
+                    'event_label': 'scratched_50_percent'
+                });
+            }
         });
     }).catch((error) => {
         console.error(error.message);
@@ -49,5 +84,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function clickToUnmute(video) {
     document.addEventListener('click', () => {
         video.muted = !video.muted;
+        // Track mute/unmute events
+        gtag('event', video.muted ? 'video_muted' : 'video_unmuted', {
+            'event_category': 'engagement',
+            'event_label': video.muted ? 'valentine_video_muted' : 'valentine_video_unmuted'
+        });
     }, { once: false });
 }
